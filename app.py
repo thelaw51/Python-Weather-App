@@ -32,6 +32,10 @@ def getWeather(city):
         icon = json["weather"][0]["icon"]
         weather = json["weather"][0]["main"]
         final = (city, country, temp, icon, weather)
+        lblLocation.pack()
+        image.pack()
+        lblTemp.pack()
+        lblWeather.pack()
         return final
         print(result.status_code)
     else:
@@ -40,7 +44,7 @@ def getWeather(city):
 
 
 
-def search():
+def search(event):
     global image
     city = cityText.get()
     Result = getWeather(city)
@@ -49,6 +53,8 @@ def search():
         img["file"] = 'Icons\\{}.png'.format(Result[3])
         lblTemp["text"] = "{}°".format(Result[2])
         lblWeather["text"] = Result[4]
+        cityEntry.place(rely=0.6)
+
     else:
         messagebox.showerror("Error","Cannot find city {}".format(city))
     
@@ -58,28 +64,26 @@ root = Tk()
 root.title("Weather app")
 root.geometry("700x350")
 root.configure(bg="grey")
+root.resizable(0,0)
 
 cityText = StringVar()
 cityEntry = Entry(root,textvariable=cityText,bg="grey")
-cityEntry.pack()
-
-
-btnSearch = Button(root, text="Search weather",width=12, command=search,bg="grey")
-btnSearch.pack()
-
+cityEntry.place(relx=0.5,rely=0.4,anchor=CENTER)
+cityEntry.insert(0,"Enter city or town")
+cityEntry.bind("<Return>",search)
 
 lblLocation = Label(root, text="", font=("raleway thin",20),bg="grey")
-lblLocation.pack()
+
 
 img = PhotoImage(file="")
 image=Label(root,image= img,bg="grey")
-image.pack()
+
 
 lblTemp = Label(root, text="",bg="grey")
-lblTemp.pack()
+
 
 lblWeather = Label(root, text="",bg="grey")
-lblWeather.pack()
+
 
 root.mainloop()
 
